@@ -27,7 +27,7 @@ export default function Navbar() {
 
 
             {}
-            <div className="flex gap-10 text-sm">
+            <div className="flex gap-1 text-sm">
 
                 {}
 

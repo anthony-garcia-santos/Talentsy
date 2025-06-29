@@ -15,7 +15,7 @@ export default function Home() {
 
             <div className="flex mt-16 bg-black p-2 text-center">
                 <div className="w-[1350px] h-auto text-[150px] font-bold">
-                    Talensy
+                    Talentsy
                 </div>
             </div>
 
