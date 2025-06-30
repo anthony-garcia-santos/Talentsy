@@ -13,8 +13,8 @@ export default function Home() {
       <Navbar />
 
       {}
-      <div className="w-full text-center bg-black p-4 mt-20">
-        <h1 className="text-4xl md:text-[150px] font-bold">Talentsy</h1>
+      <div className="w-full text-center bg-black p-16 mt-10">
+        <h1 className="text-4xl md:text-[100px] font-bold">Talentsy</h1>
       </div>
 
       {}

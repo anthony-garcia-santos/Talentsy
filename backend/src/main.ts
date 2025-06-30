@@ -1,19 +1,19 @@
+//src/main.ts
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  
 
-  const config = new DocumentBuilder()
-    .setTitle('API do Anthony')
-    .setDescription('Documentação automática da API')
-    .setVersion('1.0')
-    .build();
+  app.enableCors({
+    origin: 'http://localhost:3000', 
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
 
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document);
-
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(5000);
+  console.log('✅ Servidor rodando em http://localhost:5000');
 }
 bootstrap();
