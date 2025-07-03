@@ -18,7 +18,7 @@ export default function Navbar() {
         <nav className="bg-[#1A1A1A] w-full h-16 flex items-center justify-between px-8 fixed top-0 left-0 z-50 shadow-md border-b border-zinc-800">
 
 
-            {}
+            { }
             <div className="flex items-center gap-2 text-xl font-bold">
                 <img src="/icon.logo.png" alt="logo" className="h-8 w-auto" />
                 <div>talentsy</div>
@@ -26,10 +26,10 @@ export default function Navbar() {
 
 
 
-            {}
+            { }
             <div className="flex gap-1 text-sm">
 
-                {}
+                { }
 
                 {isHomepage && (
                     <>
@@ -53,7 +53,7 @@ export default function Navbar() {
 
 
                         <Link href="/login">
-                            <span className="transition-colors duration-500 hover:text-indigo-400 cursor-pointer text-[18px]">
+                            <span className="transition-colors duration-500 hover:text-indigo-400 cursor-pointer text-[20px] font-bold">
                                 Logar-se
                             </span>
                         </Link>
@@ -62,23 +62,22 @@ export default function Navbar() {
 
 
 
-                {}
+                { }
                 {isRegisterPage && (
 
                     <>
-                        <Link href="/">
-                            <span className="transition-colors duration-500 hover:text-indigo-400 cursor-pointer text-[18px]">
-                                Inicio
-                            </span>
-                        </Link>
+                            <Link href="/">
+                                <span className="transition-colors duration-500 hover:text-indigo-400 cursor-pointer text-[20px] font-bold px-11">
+                                    Inicio
+                                </span>
+                            </Link>
 
 
-                        <Link href="/login">
-                            <span className="transition-colors duration-500 hover:text-indigo-400 cursor-pointer text-[18px]">
-                                Já tem conta?
-                            </span>
-                        </Link>
-
+                            <Link href="/login">
+                                <span className="transition-colors duration-500 hover:text-indigo-400 cursor-pointer text-[20px] font-bold ">
+                                    Já tem conta?
+                                </span>
+                            </Link>
                     </>
                 )}
 
@@ -86,7 +85,7 @@ export default function Navbar() {
 
                     <Link href="/">
 
-                        <span className="transition-colors duration-500 hover:text-indigo-400 cursor-pointer text-[18px]">
+                        <span className="transition-colors duration-500 hover:text-indigo-400 cursor-pointer text-[20px] font-bold">
                             inicio
                         </span>
 

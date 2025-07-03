@@ -9,6 +9,30 @@ export const Cadastrar = async (dados: {
     const response = await api.post("/clientes/registrar", dados);
     return response.data;
   } catch (error) {
-    throw error; 
+    throw error;
   }
 };
+
+
+
+export const Vitrine = async(dados: {
+
+  nome: string;
+  email: string;
+
+}) => {
+
+  try{
+
+    const response = await api.get("/clientes/listarClientes", dados);
+    return response.data
+
+  } catch(error) {
+    throw error;
+
+
+
+
+  }
+
+}

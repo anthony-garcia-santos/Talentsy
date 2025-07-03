@@ -12,12 +12,13 @@ export default function Home() {
     <main className="min-h-screen bg-[#141414] text-white flex flex-col items-center">
       <Navbar />
 
-      {}
-      <div className="w-full text-center bg-black p-16 mt-10">
-        <h1 className="text-4xl md:text-[100px] font-bold">Talentsy</h1>
+      { }
+      <div className="relative w-full text-center bg-black/70 backdrop-blur-2xl text-white p-16 mt-10">
+        <h1 className="text-4xl md:text-[100px] font-bold z-10 relative">Talentsy</h1>
       </div>
 
-      {}
+
+      { }
       <div className="flex justify-center items-center mt-8 w-full px-4">
         <button
           onClick={() => setMostrarQuadrado(true)}
@@ -27,7 +28,7 @@ export default function Home() {
         </button>
       </div>
 
-      {}
+      { }
       {mostrarQuadrado && (
         <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex items-center justify-center px-4">
           <div className="flex flex-col items-center gap-6 bg-[#222222] rounded-lg p-6 w-full max-w-md text-center shadow-lg">

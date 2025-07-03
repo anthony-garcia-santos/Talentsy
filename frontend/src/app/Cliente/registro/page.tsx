@@ -78,17 +78,15 @@ export default function Home() {
 
   bg-transparent sm:bg-transparent md:bg-[#1A1A1A]
 
-  rounded-none sm:rounded-none md:rounded-2xl
-
   text-center px-2 sm:px-2 md:px-6 py-2 sm:py-2 md:py-6
 
   text-xl sm:text-xl md:text-5xl font-bold
 
-  md:mt-[-120px] md:mr-20 md:ml-[-135px]
+  md:mt-[-137px] md:mr-20 md:ml-[-135px]
 ">
           Bem-vindo ao Talentsy
           <div className="text-sm sm:text-sm md:text-2xl mt-2 font-normal text-gray-300 max-w-full sm:max-w-full md:max-w-[500px]">
-            Registre-se e mostre seu talento.
+            Registre-se e faça projetos incriveis
           </div>
         </div>
 
@@ -134,7 +132,7 @@ export default function Home() {
               {error}
             </div>
           )}
-          
+
           <button
             type="submit"
             disabled={loading}
