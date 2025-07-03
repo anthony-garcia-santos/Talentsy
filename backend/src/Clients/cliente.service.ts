@@ -22,5 +22,14 @@ export class ClienteService {
     const novoCliente = this.repo.create({ ...dto, senha: senhaHash });
     return this.repo.save(novoCliente);
   }
+
+
+  async listarTodos(): Promise<Cliente[]> {
+    return this.repo.find();
+  }
+
 }
+
+
+
 
