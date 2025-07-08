@@ -16,10 +16,3 @@ export class Cliente {
   @Column()
   senha: string;
 }
-
-
-export class CreateClienteDto {
-  nome: string;
-  email: string;
-  senha: string;
-}

@@ -6,17 +6,23 @@ import {
   Body,
   HttpException,
   HttpStatus,
-  Get
+  Get,
+  Param,
+  Res
 } from '@nestjs/common';
 import { SupabaseService } from '../supabase/services';
 import { ClienteService } from './cliente.service';
-import { CreateClienteDto } from './dto/create-cliente.dto';
+import { CreateClienteDto } from './dto/cliente.dto';
+import { JwtTokenService } from '../auth/jwt.service';
+import { Response } from 'express';
 
 @Controller('clientes')
 export class ClienteController {
   constructor(
     private readonly supabaseService: SupabaseService,
-    private readonly clienteService: ClienteService
+    private readonly clienteService: ClienteService,
+    private readonly jwtService: JwtTokenService
+
   ) { }
 
   @Post('registrar')
@@ -36,6 +42,32 @@ export class ClienteController {
   }
 
 
+  @Post('login')
+
+  async login(@Body() body: { email: string; senha: string },
+
+    @Res ({ passthrough: true }) res: Response) {
+    const cliente = await this.clienteService.validarLogin(body.email, body.senha);
+
+    if (!cliente) {
+      throw new HttpException('Credenciais inválidas', HttpStatus.UNAUTHORIZED);
+    }
+
+    const token = this.jwtService.gerarToken({ sub: cliente.id });
+
+    res.cookie('auth_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', 
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000, 
+    });
+
+    return { success: true, message: 'Login efetuado', clienteId: cliente.id };
+  }
+
+
+
+
 
   @Get()
   async listarClientes() {
@@ -47,6 +79,27 @@ export class ClienteController {
     };
   }
 
+  
+
+  @Get(':id')
+  async buscarPorId(@Param('id') id: string) {
+    try {
+      const cliente = await this.clienteService.buscarPorId(Number(id));
+      return {
+        success: true,
+        data: {
+          id: cliente.id,
+          nome: cliente.nome,
+          email: cliente.email
+        }
+      };
+    } catch (error) {
+      throw new HttpException(
+        'Cliente não encontrado',
+        HttpStatus.NOT_FOUND
+      );
+    }
+  }
 
   // ====================
   // Métodos auxiliares

@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateClienteDto = exports.Cliente = void 0;
+exports.Cliente = void 0;
 const typeorm_1 = require("typeorm");
 let Cliente = class Cliente {
     id;
@@ -37,10 +37,4 @@ __decorate([
 exports.Cliente = Cliente = __decorate([
     (0, typeorm_1.Entity)()
 ], Cliente);
-class CreateClienteDto {
-    nome;
-    email;
-    senha;
-}
-exports.CreateClienteDto = CreateClienteDto;
 //# sourceMappingURL=cliente.entity.js.map

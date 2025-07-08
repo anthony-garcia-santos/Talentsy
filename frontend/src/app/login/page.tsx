@@ -3,8 +3,13 @@
 import { useState } from "react";
 import Navbar from "@/components/navbar";
 import Rodapé from "@/components/Rodapé";
+import { login } from "@/Services/Cliente/Login";
+import Link from "next/link";
+import { useRouter } from 'next/navigation';
+
 
 export default function Login() {
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
     const [loading, setLoading] = useState(false);
@@ -19,21 +24,34 @@ export default function Login() {
             return;
         }
 
-        setTimeout(() => {
-            alert("Login simulado com sucesso!");
-            setEmail("");
-            setSenha("");
+        try {
+            const response = await login({ email, senha });
+
+            console.log("Login bem-sucedido:", response);
+            alert("Login realizado com sucesso!");
+
+            router.push('/Cliente/perfil');
+
+
+        } catch (error) {
+            console.error("Erro ao fazer login:", error);
+            alert("Email ou senha incorretos.");
+        } finally {
             setLoading(false);
-        }, 1500);
+        }
     };
+
+
+
+
 
     return (
         <main className="min-h-screen bg-[#141414] text-white flex flex-col items-center">
-            
+
             <Navbar />
 
             <div className="mt-20 mb-16 w-full px-4 flex flex-col md:flex-row justify-center items-center gap-1">
-                {}
+                { }
                 <div className="
           flex flex-col justify-center items-center
           w-full sm:max-w-full md:max-w-[700px]
@@ -50,7 +68,7 @@ export default function Login() {
                     </div>
                 </div>
 
-                {}
+                { }
                 <form
                     onSubmit={handleSubmit}
                     className="bg-[#222222] rounded-2xl p-6 w-full max-w-md flex flex-col gap-5"

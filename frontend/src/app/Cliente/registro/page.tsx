@@ -5,6 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/navbar";
 import NavbarInferior from "@/components/Rodapé"
 import { Cadastrar } from "@/Services/Cliente/Cliente"
+import { link } from "fs";
 export default function Home() {
 
   const [email, setEmail] = useState("");
@@ -48,6 +49,7 @@ export default function Home() {
       setSenha("");
       setConfirmarSenha("");
 
+    
     } catch (error: any) {
       if (error.response) {
         setError(error.response.data?.message || "Erro ao cadastrar");

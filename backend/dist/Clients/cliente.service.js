@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const cliente_entity_1 = require("./entities/cliente.entity");
+const common_2 = require("@nestjs/common");
 const bcrypt = require("bcrypt");
 let ClienteService = class ClienteService {
     repo;
@@ -31,6 +32,23 @@ let ClienteService = class ClienteService {
         const senhaHash = await bcrypt.hash(dto.senha, 10);
         const novoCliente = this.repo.create({ ...dto, senha: senhaHash });
         return this.repo.save(novoCliente);
+    }
+    async listarTodos() {
+        return this.repo.find();
+    }
+    async buscarPorId(id) {
+        const cliente = await this.repo.findOne({ where: { id } });
+        if (!cliente) {
+            throw new common_2.NotFoundException('Cliente não encontrado');
+        }
+        return cliente;
+    }
+    async validarLogin(email, senha) {
+        const cliente = await this.repo.findOne({ where: { email } });
+        if (!cliente)
+            return null;
+        const senhaConfere = await bcrypt.compare(senha, cliente.senha);
+        return senhaConfere ? cliente : null;
     }
 };
 exports.ClienteService = ClienteService;

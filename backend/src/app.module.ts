@@ -16,7 +16,6 @@ import { SupabaseService } from './supabase/services';
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
-        // Use esta forma mais segura:
         host: config.get('DB_HOST'),
         port: config.get<number>('DB_PORT'),
         username: config.get('DB_USER'),

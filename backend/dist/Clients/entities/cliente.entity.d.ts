@@ -4,8 +4,3 @@ export declare class Cliente {
     email: string;
     senha: string;
 }
-export declare class CreateClienteDto {
-    nome: string;
-    email: string;
-    senha: string;
-}

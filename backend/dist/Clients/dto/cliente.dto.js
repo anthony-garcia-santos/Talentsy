@@ -7,4 +7,4 @@ class CreateClienteDto {
     senha;
 }
 exports.CreateClienteDto = CreateClienteDto;
-//# sourceMappingURL=create-cliente.dto.js.map
+//# sourceMappingURL=cliente.dto.js.map
