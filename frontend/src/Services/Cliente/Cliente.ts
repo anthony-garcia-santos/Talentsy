@@ -28,11 +28,10 @@ export const obterPerfil = async () => {
 };
 
 
-// correto no serviço (Cliente.ts)
 export const listarClientes = async () => {
   try {
-    const response = await api.get("/clientes/"); // ou o endpoint certo
-    return response.data.data; // ou ajusta conforme vem do backend
+    const response = await api.get("/clientes/"); 
+    return response.data.data; 
   } catch (error) {
     throw error;
   }

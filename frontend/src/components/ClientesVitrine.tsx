@@ -10,11 +10,11 @@ export default function ClientesVitrine() {
             try {
                 const dados = await listarClientes();
 
-                // Garante que seja array, mesmo se a API mudar no futuro
+
                 setClientes(Array.isArray(dados) ? dados : []);
             } catch (error) {
                 console.error("Erro ao buscar vitrine:", error);
-                setClientes([]); // evitar undefined
+                setClientes([]);
             } finally {
                 setLoading(false);
             }
@@ -43,8 +43,6 @@ export default function ClientesVitrine() {
                         >
                             <h2 className="relative top-40 text-xl font-bold">{cliente.nome}</h2>
 
-                            {/* Se quiser mostrar email ou outro conteúdo, coloca aqui */}
-                            {/* <p className="text-sm text-gray-300">{cliente.email}</p> */}
                         </div>
                     ))
                 )}

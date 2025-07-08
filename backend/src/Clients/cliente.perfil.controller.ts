@@ -24,9 +24,9 @@ export class PerfilController {
         }
       };
     } catch (error) {
-      throw new HttpException( // Agora HttpException está disponível
+      throw new HttpException( 
         'Erro ao buscar perfil do usuário',
-        HttpStatus.INTERNAL_SERVER_ERROR // E HttpStatus também
+        HttpStatus.INTERNAL_SERVER_ERROR 
       );
     }
   }

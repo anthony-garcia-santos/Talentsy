@@ -36,7 +36,6 @@ export default function Perfil() {
         <p><strong>ID:</strong> {perfil.id}</p>
         <p><strong>Nome:</strong> {perfil.nome}</p>
         <p><strong>Email:</strong> {perfil.email}</p>
-        {/* Adicione mais campos conforme necessário */}
       </div>
     </div>
   );
