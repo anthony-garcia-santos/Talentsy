@@ -23,30 +23,28 @@ export default function ClientesVitrine() {
         fetchClientes();
     }, []);
 
-    return (
-        <main className=" gap-3 mt-[-14px] p-2  w-full">
+  return (
+    <main className="gap-3 mt-[-14px] p-2 w-full">
+      <div className="w-max text-2xl font-bold">Clientes</div>
+      <div className="flex md:flex-row sm:flex-col gap-4 h-[252px]">
+        {loading ? (
+          <p>Carregando clientes...</p>
+        ) : clientes.length === 0 ? (
+          <p>Nenhum cliente encontrado.</p>
+        ) : (
+          clientes.map((cliente) => (
 
-            <div className=" w-max text-2xl font-bold">Clientes</div>
+            <Link key={cliente.id} href={`/PerfilGeral/${cliente.id}`}>
+              <button className="bg-[#222222] shadow-blue-300 text-white rounded-lg shadow-md h-36 p-6 mb-4 w-80"
+              >
+                <h2 className="text-xl font-bold">{cliente.nome}</h2>
+              </button>
+            </Link>
 
-            <div className="flex md:flex-row sm:flex-col gap-4 h-[252px] ">
 
-
-                {loading ? (
-                    <p>Carregando clientes...</p>
-                ) : clientes.length === 0 ? (
-                    <p>Nenhum cliente encontrado.</p>
-                ) : (
-                    clientes.map((cliente) => (
-                        <div
-                            key={cliente.id}
-                            className="bg-[#222222] shadow-blue-300 text-white rounded-lg shadow-md p-6 mb-4 w-80"
-                        >
-                            <h2 className="relative top-40 text-xl font-bold">{cliente.nome}</h2>
-
-                        </div>
-                    ))
-                )}
-            </div>
-        </main>
-    );
+          ))
+        )}
+      </div>
+    </main>
+  );
 }
