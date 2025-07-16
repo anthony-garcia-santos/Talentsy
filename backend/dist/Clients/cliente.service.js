@@ -16,7 +16,7 @@ exports.ClienteService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
-const cliente_entity_1 = require("./entities/cliente.entity");
+const cliente_entity_1 = require("../ModelBD/cliente.entity");
 const common_2 = require("@nestjs/common");
 const bcrypt = require("bcrypt");
 let ClienteService = class ClienteService {
@@ -41,6 +41,18 @@ let ClienteService = class ClienteService {
         if (!cliente) {
             throw new common_2.NotFoundException('Cliente não encontrado');
         }
+        return cliente;
+    }
+    async editarPerfil(id, dto) {
+        const cliente = await this.repo.findOne({ where: { id } });
+        if (!cliente) {
+            throw new common_2.NotFoundException('Cliente não encontrado');
+        }
+        cliente.sobre = dto.sobre;
+        cliente.habilidades = dto.habilidades;
+        cliente.projetosRecentes = dto.projetosRecentes;
+        cliente.cargo = dto.cargo;
+        await this.repo.save(cliente);
         return cliente;
     }
     async validarLogin(email, senha) {

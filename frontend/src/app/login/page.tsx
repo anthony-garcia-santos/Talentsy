@@ -30,7 +30,7 @@ export default function Login() {
             console.log("Login bem-sucedido:", response);
             alert("Login realizado com sucesso!");
 
-            router.push('/Cliente/perfil');
+            router.push('/');
 
 
         } catch (error) {

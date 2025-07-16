@@ -1,3 +1,5 @@
+
+
 'use client';
 
 import Link from "next/link";
@@ -5,6 +7,8 @@ import Navbar from "@/components/navbar";
 import Rodapé from "@/components/Rodapé";
 import { useState } from "react";
 import ClienteVitrine from "@/components/ClientesVitrine"
+
+
 export default function Home() {
 
 
@@ -45,17 +49,17 @@ export default function Home() {
               <Link href="/Empresa/registro">
                 <span className="bg-zinc-900 text-gray-300 hover:text-blue-400 font-bold px-4 py-2 rounded-xl transition-all">
                   Empresa
-                </span>
+                </span> 
               </Link>
               */}
               
-              <Link href="/Cliente/registro">
+              <Link href="/Cliente">
                 <span className="bg-zinc-900 text-green-500 hover:text-blue-400 font-bold px-4 py-2 rounded-xl transition-all cursor-pointer">
                   Cliente
                 </span>
               </Link>
 
-              <Link href="/Freelancer/registro">
+              <Link href="/Freelancer">
                 <span className="bg-zinc-900 text-white hover:text-blue-400 font-bold px-4 py-2 rounded-xl transition-all cursor-pointer">
                   Freelancer
                 </span>
