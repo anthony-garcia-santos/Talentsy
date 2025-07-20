@@ -72,16 +72,14 @@
 </head>
 <body>
 
-  <h1>Política de Privacidade</h1>
+  <h1>Políticas de negócios</h1>
   <p>Clique abaixo para visualizar diretamente na sua tela:</p>
-  <button id="abrirModal" class="button">Ver Política</button>
+  <button id="abrirModal" class="button">Ver Políticas</button>
 
   <!-- MODAL -->
   <div id="modalOverlay" class="overlay">
     <div class="modal">
-      <h2>Política de Privacidade - Talentsy</h2>
-      <p>Esta plataforma respeita a sua privacidade. Todos os dados coletados são utilizados exclusivamente para fins de análise e aprimoramento da experiência do usuário.</p>
-      <p>Ao utilizar a Talentsy, você concorda com a coleta de cookies e dados básicos conforme descrito na nossa política completa.</p>
+      <h2>Termos de negócios - Talentsy</h2>
       <p>Para mais detalhes, acesse:  
         <a href="https://ethereal-quit-b8f.notion.site/Termos-de-Privacidade-Talentsy-222737bf24358062a37bc4b9dbb83075?pvs=143" target="_blank">
           Política Completa no Notion
@@ -107,3 +105,4 @@
   </script>
 </body>
 </html>
+
