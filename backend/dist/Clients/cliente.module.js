@@ -14,7 +14,6 @@ const cliente_service_1 = require("./cliente.service");
 const cliente_controller_Registro_1 = require("./Controller.Cliente/cliente.controller.Registro");
 const services_1 = require("../supabase/services");
 const module_1 = require("../auth/module");
-const cliente_perfil_controller_1 = require("./Controller.Cliente/cliente.perfil.controller");
 const config_1 = require("@nestjs/config");
 const cloudinary_module_1 = require("../cloudinary/cloudinary.module");
 let ClienteModule = class ClienteModule {
@@ -28,7 +27,7 @@ exports.ClienteModule = ClienteModule = __decorate([
             cloudinary_module_1.CloudinaryModule,
             typeorm_1.TypeOrmModule.forFeature([cliente_entity_1.Cliente]),
             module_1.AuthModule,],
-        controllers: [cliente_controller_Registro_1.ClienteController, cliente_perfil_controller_1.PerfilController],
+        controllers: [cliente_controller_Registro_1.ClienteController],
         providers: [cliente_service_1.ClienteService, services_1.SupabaseService],
     })
 ], ClienteModule);

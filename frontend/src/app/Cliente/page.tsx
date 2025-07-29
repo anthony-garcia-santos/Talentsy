@@ -20,7 +20,6 @@ export default function Home() {
     setLoading(true);
     setError(null);
 
-    // Validações
     if (!nome || !email || !senha || !ConfirmarSenha) {
       setError("Preencha todos os campos.");
       setLoading(false);

@@ -1,17 +1,16 @@
 //src/ModelBD/cliente.entity.ts
 
-// cliente.entity.ts
 import { Entity, PrimaryColumn, Column, CreateDateColumn } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import { IsOptional, IsString } from 'class-validator';
 
-@Entity('users') // Mantemos o nome original da tabela no Supabase
+@Entity('users') 
 export class Cliente {
   @PrimaryColumn({
     type: 'uuid',
-    default: () => 'gen_random_uuid()' // Função do PostgreSQL
+    default: () => 'gen_random_uuid()' 
   })
-  id: string; // UUID em vez de número
+  id: string;
 
   @Column({ length: 100 })
   nome: string;
@@ -20,7 +19,7 @@ export class Cliente {
   email: string;
 
   @Column({ type: 'text' })
-  senha: string; // Armazenará o hash
+  senha: string; 
 
   @IsOptional()
   @IsString()

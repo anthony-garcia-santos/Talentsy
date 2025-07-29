@@ -53,22 +53,22 @@ export class ClienteService {
 
 
 
-  async editarPerfil(id: string, dto: EditarPerfilDto): Promise<Cliente> {
-    const cliente = await this.repo.findOne({ where: { id } });
-
-    if (!cliente) {
-      throw new NotFoundException('Cliente não encontrado');
-    }
-
-    cliente.sobre = dto.sobre;
-    cliente.habilidades = dto.habilidades;
-    cliente.projetosRecentes = dto.projetosRecentes;
-    cliente.cargo = dto.cargo;
-
-    await this.repo.save(cliente);
-
-    return cliente;
+async editarPerfil(id: string, dto: EditarPerfilDto): Promise<Cliente> {
+  const cliente = await this.repo.findOne({ where: { id } });
+  
+  if (!cliente) {
+    throw new NotFoundException('Cliente não encontrado');
   }
+
+  if (dto.foto !== undefined) cliente.foto = dto.foto;
+  if (dto.sobre !== undefined) cliente.sobre = dto.sobre;
+  if (dto.habilidades !== undefined) cliente.habilidades = dto.habilidades;
+  if (dto.projetosRecentes !== undefined) cliente.projetosRecentes = dto.projetosRecentes;
+  if (dto.cargo !== undefined) cliente.cargo = dto.cargo;
+
+  await this.repo.save(cliente);
+  return cliente;
+}
 
 
 

@@ -5,7 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as fs from 'fs';
 import { ClienteModule } from './Clients/cliente.module';
 import { SupabaseService } from './supabase/services';
-import { AuthModule } from './auth/module'; 
+import { AuthModule } from './auth/module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -34,7 +35,9 @@ import { AuthModule } from './auth/module';
       inject: [ConfigService]
     }),
     ClienteModule,
-    AuthModule
+    AuthModule,
+    CloudinaryModule, 
+
   ],
   providers: [SupabaseService]
 })

@@ -13,6 +13,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const cliente_module_1 = require("./Clients/cliente.module");
 const services_1 = require("./supabase/services");
 const module_1 = require("./auth/module");
+const cloudinary_module_1 = require("./cloudinary/cloudinary.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -44,7 +45,8 @@ exports.AppModule = AppModule = __decorate([
                 inject: [config_1.ConfigService]
             }),
             cliente_module_1.ClienteModule,
-            module_1.AuthModule
+            module_1.AuthModule,
+            cloudinary_module_1.CloudinaryModule,
         ],
         providers: [services_1.SupabaseService]
     })

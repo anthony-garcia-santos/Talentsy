@@ -1,7 +1,7 @@
-import { v2 as cloudinary, UploadApiResponse } from 'cloudinary';
+import { ConfigService } from '@nestjs/config';
+import { UploadApiResponse } from 'cloudinary';
 export declare class CloudinaryService {
-    private readonly cloudinaryClient;
-    constructor(cloudinaryClient: typeof cloudinary);
+    private config;
+    constructor(config: ConfigService);
     uploadImage(file: Express.Multer.File, folder: string): Promise<UploadApiResponse>;
-    deleteImage(publicId: string): Promise<void>;
 }

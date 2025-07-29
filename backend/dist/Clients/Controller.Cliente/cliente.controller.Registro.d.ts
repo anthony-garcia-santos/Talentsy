@@ -1,5 +1,4 @@
 import { ClienteService } from '../cliente.service';
-import { CreateClienteDto } from '../../dto/Cliente.DTO/cliente.dto.Registro';
 import { LoginDto } from 'src/dto/Cliente.DTO/cliente.dto.login';
 import { JwtTokenService } from '../../auth/jwt.service';
 import { Response } from 'express';
@@ -15,15 +14,14 @@ export declare class ClienteController {
     private readonly jwtService;
     private readonly cloudinaryService;
     constructor(clienteService: ClienteService, jwtService: JwtTokenService, cloudinaryService: CloudinaryService);
-    registrar(dto: CreateClienteDto): Promise<{
+    uploadFotoPerfil(id: string, file: Express.Multer.File): Promise<{
         success: boolean;
-        data: {
-            id: string;
-            nome: string;
-            email: string;
-        };
+        url: string;
+        public_id: string;
     }>;
-    editarPerfil(id: string, dto: EditarPerfilDto, req: RequestWithUsuario, file?: Express.Multer.File): Promise<{
+    editarPerfil(id: string, dto: EditarPerfilDto & {
+        foto?: string;
+    }, req: RequestWithUsuario): Promise<{
         success: boolean;
         message: string;
         data: {

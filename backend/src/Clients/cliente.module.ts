@@ -7,9 +7,8 @@ import { ClienteService } from './cliente.service';
 import { ClienteController } from './Controller.Cliente/cliente.controller.Registro';
 import { SupabaseService } from '../supabase/services';
 import { AuthModule } from '../auth/module';
-import { PerfilController } from './Controller.Cliente/cliente.perfil.controller';
 import { ConfigModule } from '@nestjs/config';
-import { CloudinaryModule } from '../cloudinary/cloudinary.module'; // <-- caminho correto
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -21,7 +20,7 @@ import { CloudinaryModule } from '../cloudinary/cloudinary.module'; // <-- camin
 
     AuthModule,],
 
-  controllers: [ClienteController, PerfilController],
+  controllers: [ClienteController],
   providers: [ClienteService, SupabaseService],
 })
 export class ClienteModule { }

@@ -7,15 +7,16 @@ import {
   Param,
   Patch,
   Res,
-  HttpException,
-  HttpStatus,
   UsePipes,
   ValidationPipe,
   UseGuards,
   Req,
-  Request,
   UploadedFile,
-  UseInterceptors
+  UseInterceptors,
+  BadRequestException,
+  InternalServerErrorException,
+  HttpException,
+  HttpStatus
 } from '@nestjs/common';
 import { ClienteService } from '../cliente.service';
 import { CreateClienteDto } from '../../dto/Cliente.DTO/cliente.dto.Registro';
@@ -28,9 +29,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from '../../cloudinary/cloudinary.service';
 
 interface RequestWithUsuario extends Request {
-  user: {
-    sub: string;
-  };
+  user: { sub: string };
 }
 
 @Controller('clientes')
@@ -41,55 +40,56 @@ export class ClienteController {
     private readonly cloudinaryService: CloudinaryService
   ) { }
 
-  @Post('registrar')
-  @UsePipes(new ValidationPipe())
-  async registrar(@Body() dto: CreateClienteDto) {
-    const cliente = await this.clienteService.register(dto);
+
+  @Post(':id/foto')
+  @UseInterceptors(FileInterceptor('foto'))
+  async uploadFotoPerfil(
+    @Param('id') id: string,
+    @UploadedFile() file: Express.Multer.File
+  ) {
+    if (!file) {
+      throw new BadRequestException('Nenhum arquivo enviado');
+    }
+
+    const result = await this.cloudinaryService.uploadImage(file, 'perfis');
+
+    const clienteAtual = await this.clienteService.buscarPorId(id);
+
+    await this.clienteService.editarPerfil(id, {
+      foto: result.secure_url,
+      sobre: clienteAtual.sobre || '',
+      habilidades: clienteAtual.habilidades || '',
+      projetosRecentes: clienteAtual.projetosRecentes || '[]',
+      cargo: clienteAtual.cargo || ''
+    });
+
     return {
       success: true,
-      data: {
-        id: cliente.id,
-        nome: cliente.nome,
-        email: cliente.email,
-      }
+      url: result.secure_url,
+      public_id: result.public_id
     };
   }
 
+
+
+
+
+
+
+
+
+
   @Patch(':id/editar-perfil')
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FileInterceptor('foto'))
   async editarPerfil(
     @Param('id') id: string,
-    @Body() dto: EditarPerfilDto,
+    @Body() dto: EditarPerfilDto & { foto?: string },
     @Req() req: RequestWithUsuario,
-    @UploadedFile() file?: Express.Multer.File
   ) {
     if (req.user.sub !== id) {
-      throw new HttpException(
-        'Não autorizado a editar este perfil',
-        HttpStatus.FORBIDDEN
-      );
+      throw new HttpException('Não autorizado a editar este perfil', HttpStatus.FORBIDDEN);
     }
-
-    let fotoUrl: string | undefined;
-    
-    if (file) {
-      try {
-        const uploadResult = await this.cloudinaryService.uploadImage(file, 'perfis');
-        fotoUrl = uploadResult.secure_url;
-      } catch (error) {
-        throw new HttpException(
-          'Erro ao fazer upload da imagem',
-          HttpStatus.INTERNAL_SERVER_ERROR
-        );
-      }
-    }
-
-    const cliente = await this.clienteService.editarPerfil(id, {
-      ...dto,
-      ...(fotoUrl && { foto: fotoUrl }), 
-    });
-
+    const cliente = await this.clienteService.editarPerfil(id, dto);
     return {
       success: true,
       message: 'Perfil atualizado com sucesso!',
@@ -107,38 +107,21 @@ export class ClienteController {
 
 
 
-
-
-
-
-
-
   @Post('login')
   async login(@Body() body: LoginDto, @Res({ passthrough: true }) res: Response) {
     const cliente = await this.clienteService.validarLogin(body.email, body.senha);
     if (!cliente) {
       throw new HttpException('Credenciais inválidas', HttpStatus.UNAUTHORIZED);
     }
-
     const token = this.jwtService.gerarToken({ sub: cliente.id });
-
     res.cookie('auth_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-
-    return {
-      success: true,
-      message: 'Login efetuado',
-      clienteId: cliente.id
-    };
+    return { success: true, message: 'Login efetuado', clienteId: cliente.id };
   }
-
-
-
-
 
 
 
@@ -148,32 +131,22 @@ export class ClienteController {
   async listarClientes() {
     try {
       const clientes = await this.clienteService.listarTodos();
-
-      if (!clientes || clientes.length === 0) {
-        return {
-          success: true,
-          message: 'Nenhum cliente encontrado',
-          data: [],
-          total: 0
-        };
+      if (!clientes.length) {
+        return { success: true, message: 'Nenhum cliente encontrado', data: [], total: 0 };
       }
-
       return {
         success: true,
         total: clientes.length,
-        data: clientes.map(cliente => ({
-          id: cliente.id,
-          nome: cliente.nome,
-          email: cliente.email,
-          cargo: cliente.cargo,
-          foto: cliente.foto 
+        data: clientes.map(c => ({
+          id: c.id,
+          nome: c.nome,
+          email: c.email,
+          cargo: c.cargo,
+          foto: c.foto
         }))
       };
     } catch (error) {
-      throw new HttpException(
-        'Erro ao listar clientes',
-        HttpStatus.INTERNAL_SERVER_ERROR
-      );
+      throw new HttpException('Erro ao listar clientes', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -181,12 +154,7 @@ export class ClienteController {
 
 
 
-
-
-
-
-
-
+  
   @Get(':id')
   async buscarPorId(@Param('id') id: string) {
     const cliente = await this.clienteService.buscarPorId(id);
@@ -196,7 +164,7 @@ export class ClienteController {
         id: cliente.id,
         nome: cliente.nome,
         email: cliente.email,
-        foto: cliente.foto || null, 
+        foto: cliente.foto || null,
         sobre: cliente.sobre || null,
         habilidades: cliente.habilidades || null,
         projetos_recentes: cliente.projetosRecentes || null,

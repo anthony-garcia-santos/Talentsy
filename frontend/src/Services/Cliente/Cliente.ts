@@ -2,7 +2,10 @@
 
 import api from "../axios";
 
-// Cadastro de novo cliente
+
+
+
+
 export const Cadastrar = async (dados: {
   nome: string;
   email: string;
@@ -16,7 +19,11 @@ export const Cadastrar = async (dados: {
   }
 };
 
-// Buscar perfil por ID
+
+
+
+
+
 export const obterPerfilPorId = async (id: string) => {
   try {
     const response = await api.get(`/clientes/${id}`);
@@ -26,7 +33,10 @@ export const obterPerfilPorId = async (id: string) => {
   }
 };
 
-// Listar todos os clientes
+
+
+
+
 export const listarClientes = async () => {
   try {
     const response = await api.get("/clientes/", {
@@ -45,7 +55,10 @@ export const listarClientes = async () => {
   }
 };
 
-// Verificar autenticação do usuário logado
+
+
+
+
 export const autenticacaoLogin = async () => {
   try {
     const response = await api.get("/api/me", {
@@ -62,7 +75,6 @@ export const autenticacaoLogin = async () => {
 
 
 
-// Enviar dados + imagem para atualizar o perfil
 export const enviarPerfilCompleto = async (
   id: string,
   dados: {
@@ -70,24 +82,36 @@ export const enviarPerfilCompleto = async (
     habilidades: string;
     projetos_recentes: string;
     cargo?: string;
-  },
-  file?: File
+    foto?: string; 
+  }
 ) => {
-  const formData = new FormData();
-  formData.append("sobre", dados.sobre);
-  formData.append("habilidades", dados.habilidades);
-  formData.append("projetos_recentes", dados.projetos_recentes);
-  if (dados.cargo) formData.append("cargo", dados.cargo);
-  if (file) formData.append("foto", file);
-
   try {
-    const response = await api.patch(`/clientes/${id}/editar-perfil`, formData, {
+    const response = await api.patch(`/clientes/${id}/editar-perfil`, dados, {
       withCredentials: true,
     });
-
     return response.data.data;
   } catch (error) {
     console.error("Erro ao enviar perfil completo:", error);
     throw error;
   }
+};
+
+
+
+
+export const uploadFotoPerfil = async (
+  id: string,
+  file: File
+): Promise<{ url: string; public_id: string }> => {
+  const formData = new FormData();
+  formData.append('foto', file);
+
+  const response = await api.post(`/clientes/${id}/foto`, formData, {
+    withCredentials: true,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return response.data; 
 };

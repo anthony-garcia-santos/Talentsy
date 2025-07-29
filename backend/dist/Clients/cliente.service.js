@@ -48,10 +48,16 @@ let ClienteService = class ClienteService {
         if (!cliente) {
             throw new common_2.NotFoundException('Cliente não encontrado');
         }
-        cliente.sobre = dto.sobre;
-        cliente.habilidades = dto.habilidades;
-        cliente.projetosRecentes = dto.projetosRecentes;
-        cliente.cargo = dto.cargo;
+        if (dto.foto !== undefined)
+            cliente.foto = dto.foto;
+        if (dto.sobre !== undefined)
+            cliente.sobre = dto.sobre;
+        if (dto.habilidades !== undefined)
+            cliente.habilidades = dto.habilidades;
+        if (dto.projetosRecentes !== undefined)
+            cliente.projetosRecentes = dto.projetosRecentes;
+        if (dto.cargo !== undefined)
+            cliente.cargo = dto.cargo;
         await this.repo.save(cliente);
         return cliente;
     }
