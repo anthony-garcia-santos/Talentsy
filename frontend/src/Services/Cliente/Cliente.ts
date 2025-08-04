@@ -37,6 +37,9 @@ export const obterPerfilPorId = async (id: string) => {
 
 
 
+
+
+
 export const listarClientes = async () => {
   try {
     const response = await api.get("/clientes/", {
@@ -59,6 +62,10 @@ export const listarClientes = async () => {
 
 
 
+
+
+
+
 export const autenticacaoLogin = async () => {
   try {
     const response = await api.get("/api/me", {
@@ -70,6 +77,11 @@ export const autenticacaoLogin = async () => {
     throw error;
   }
 };
+
+
+
+
+
 
 
 
@@ -95,6 +107,9 @@ export const enviarPerfilCompleto = async (
     throw error;
   }
 };
+
+
+
 
 
 

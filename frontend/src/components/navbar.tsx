@@ -16,15 +16,14 @@ export default function Navbar({ usuarioId, perfilId }: NavbarProps) {
     const isPerfilpage = pathname.startsWith("/PerfilGeral/");
 
     const isRegisterPage =
-        pathname.toLowerCase().startsWith("/empresa/registro") ||
-        pathname.toLowerCase().startsWith("/freelancer/registro") ||
-        pathname.toLowerCase().startsWith("/cliente/registro");
+        pathname.toLowerCase().startsWith("/freelancer") ||
+        pathname.toLowerCase().startsWith("/cliente");
 
     return (
         <nav className="bg-[#1A1A1A] w-full h-16 flex items-center justify-between px-4 sm:px-8 fixed top-0 left-0 z-50 shadow-md border-b border-zinc-800">
             <div className="flex items-center gap-2 text-lg sm:text-xl font-bold">
-                <img src="/icon.logo.png" alt="logo" className="h-6 sm:h-8 w-auto" />
-                <div>talentsy</div>
+                <img src="/icon.logo.png" alt="logo" className="h-6 sm:h-8 w-auto hover:scale-105 transition-transform" />
+                <div className="hover:scale-105 transition-transform">talentsy</div>
             </div>
 
             <div className="flex gap-1 sm:gap-2 text-xs sm:text-sm">
