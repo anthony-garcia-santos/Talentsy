@@ -10,12 +10,12 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: process.env.PORTFRONT || 'http://localhost:3000',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
 
-  await app.listen(5000);
+  await app.listen(process.env.PORT || 5000);
   console.log('✅ Servidor rodando em http://localhost:5000');
 }
 
