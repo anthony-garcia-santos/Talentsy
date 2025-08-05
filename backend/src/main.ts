@@ -10,13 +10,9 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.enableCors({
-    origin: [
-      process.env.PORTFRONT,
-      'https://talentsy.vercel.app',
-      'https://talentsy-git-main-anthony-garcia-santos-projects.vercel.app'
-    ],
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    credentials: true,
+    origin: true, 
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true
   });
 
   await app.listen(process.env.PORT || 5000);
