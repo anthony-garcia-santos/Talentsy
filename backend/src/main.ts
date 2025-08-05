@@ -11,12 +11,12 @@ async function bootstrap() {
 
   app.enableCors({
     origin: process.env.PORTFRONT || 'http://localhost:3000',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     credentials: true,
   });
 
   await app.listen(process.env.PORT || 5000);
-  console.log('✅ Servidor rodando em http://localhost:5000');
+  console.log(`✅ Servidor rodando em http://localhost:${process.env.PORT || 5000}`);
 }
 
 bootstrap();
