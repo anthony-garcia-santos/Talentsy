@@ -154,22 +154,43 @@ export class ClienteController {
 
 
 
-  
+
   @Get(':id')
   async buscarPorId(@Param('id') id: string) {
-    const cliente = await this.clienteService.buscarPorId(id);
-    return {
-      success: true,
-      data: {
-        id: cliente.id,
-        nome: cliente.nome,
-        email: cliente.email,
-        foto: cliente.foto || null,
-        sobre: cliente.sobre || null,
-        habilidades: cliente.habilidades || null,
-        projetos_recentes: cliente.projetosRecentes || null,
-        cargo: cliente.cargo || null
+    // Verifica se é um UUID válido
+    if (!this.isValidUUID(id)) {
+      throw new BadRequestException('ID deve ser um UUID válido');
+    }
+
+    try {
+      const cliente = await this.clienteService.buscarPorId(id);
+
+      if (!cliente) {
+        throw new HttpException('Cliente não encontrado', HttpStatus.NOT_FOUND);
       }
-    };
+
+      return {
+        success: true,
+        data: {
+          id: cliente.id,
+          nome: cliente.nome,
+          email: cliente.email,
+          foto: cliente.foto || null,
+          sobre: cliente.sobre || null,
+          habilidades: cliente.habilidades || null,
+          projetos_recentes: cliente.projetosRecentes || null,
+          cargo: cliente.cargo || null
+        }
+      };
+    } catch (error) {
+      throw new HttpException('Erro ao buscar cliente', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
+
+  private isValidUUID(id: string): boolean {
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    return uuidRegex.test(id);
+  }
+
+  
 }
