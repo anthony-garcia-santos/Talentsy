@@ -118,6 +118,7 @@ export class ClienteController {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
+      domain: '.talentsy.onrender.com'
     });
     return { success: true, message: 'Login efetuado', clienteId: cliente.id };
   }
@@ -191,5 +192,5 @@ export class ClienteController {
     return uuidRegex.test(id);
   }
 
-  
+
 }
