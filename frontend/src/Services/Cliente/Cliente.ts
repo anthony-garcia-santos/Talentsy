@@ -42,19 +42,18 @@ export const obterPerfilPorId = async (id: string) => {
 
 export const listarClientes = async () => {
   try {
-    const response = await api.get("/clientes/", {
-      withCredentials: true 
+    const response = await api.get("/clientes");
+    
+    console.log('Resposta da API:', response.data);
+    
+    return response.data.data || [];
+  } catch (error: any) {
+    console.error('Erro detalhado:', {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
     });
-
-    console.log('Resposta da API:', response);
-
-    if (response.data.success) {
-      return response.data.data; 
-    }
-    return []; 
-  } catch (error) {
-    console.error('Erro ao listar clientes:', error);
-    throw error;
+    throw new Error(error.response?.data?.message || 'Falha ao listar clientes');
   }
 };
 

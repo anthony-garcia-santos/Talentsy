@@ -52,7 +52,6 @@ export class ClienteController {
     }
 
     const result = await this.cloudinaryService.uploadImage(file, 'perfis');
-
     const clienteAtual = await this.clienteService.buscarPorId(id);
 
     await this.clienteService.editarPerfil(id, {
