@@ -11,12 +11,12 @@ async function bootstrap() {
 
 app.enableCors({
   origin: [
-    'https://talentsy.vercel.app', // Seu frontend na Vercel
-    'https://talentsy.onrender.com', // Seu backend
-    'http://localhost:3000'         // Para desenvolvimento local
+    'https://talentsy.vercel.app',
+    'https://talentsy.onrender.com',
+    'http://localhost:3000'        
   ],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true, // Permite cookies/tokens
+  credentials: true, 
   allowedHeaders: 'Content-Type,Authorization'
 });
 
