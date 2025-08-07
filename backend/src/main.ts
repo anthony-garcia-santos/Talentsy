@@ -13,7 +13,8 @@ app.enableCors({
   origin: [
     'https://talentsy.vercel.app',
     'https://talentsy.onrender.com',
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'https://api-talentsy.onrender.com'
   ],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
