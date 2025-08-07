@@ -69,6 +69,7 @@ export const autenticacaoLogin = async () => {
   try {
     const response = await api.get("/api/me", {
       withCredentials: true
+      
     });
 
     return response.data;

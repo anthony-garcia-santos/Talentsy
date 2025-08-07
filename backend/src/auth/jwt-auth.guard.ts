@@ -5,11 +5,14 @@ import { JwtTokenService } from './jwt.service';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
-  constructor(private readonly jwtTokenService: JwtTokenService) {}
+  constructor(private readonly jwtTokenService: JwtTokenService) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request: Request = context.switchToHttp().getRequest();
+
+
     const token = request.cookies['auth_token'];
+    console.log('🍪 [JwtAuthGuard] request.cookies =', request.cookies);
 
     if (!token) {
       throw new UnauthorizedException('Token não encontrado');
