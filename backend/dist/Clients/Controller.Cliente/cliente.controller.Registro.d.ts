@@ -67,5 +67,6 @@ export declare class ClienteController {
             cargo: string | null;
         };
     }>;
+    private isValidUUID;
 }
 export {};

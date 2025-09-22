@@ -20,6 +20,7 @@ let JwtAuthGuard = class JwtAuthGuard {
     async canActivate(context) {
         const request = context.switchToHttp().getRequest();
         const token = request.cookies['auth_token'];
+        console.log('🍪 [JwtAuthGuard] request.cookies =', request.cookies);
         if (!token) {
             throw new common_1.UnauthorizedException('Token não encontrado');
         }

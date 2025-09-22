@@ -16,6 +16,7 @@ interface Cliente {
 export default function ClientesVitrine() {
     const [loading, setLoading] = useState(true);
     const [clientes, setClientes] = useState<Cliente[]>([]);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         async function fetchClientes() {
@@ -24,6 +25,7 @@ export default function ClientesVitrine() {
                 setClientes(Array.isArray(dados) ? dados : []);
             } catch (error) {
                 console.error("Erro ao renderizar vitrine:", error);
+                setError("Não foi possível carregar os clientes.");
                 setClientes([]);
             } finally {
                 setLoading(false);
@@ -37,11 +39,12 @@ export default function ClientesVitrine() {
             <div className="text-xl sm:text-2xl font-bold mb-2">Clientes</div>
 
             <div className="flex gap-4 h-[252px] pb-4">
-
+                
+                {error && <p className="text-red-400">{error}</p>}
                 {loading ? (
 
-                    [...Array(3)].map((_, i) => (
-                        <div className="relative w-80 h-56 rounded-lg p-[3px] bg-gradient-to-r from-pink-500 via-yellow-500 to-purple-500 animate-spin-slow">
+                    Array.from({ length: 3 }).map((_, i) => (
+                        <div key={`skeleton-${i}`} className="relative w-80 h-56 rounded-lg p-[3px] bg-gradient-to-r from-pink-500 via-yellow-500 to-purple-500 animate-spin-slow">
                             <div className="w-full h-full bg-gray-900 rounded-lg flex items-center justify-center text-white">
                                 Carregando...
                             </div>
@@ -50,11 +53,12 @@ export default function ClientesVitrine() {
 
                 ) : clientes.length === 0 ? (
                     <p>Nenhum cliente encontrado.</p>
+
                 ) : (
-                    clientes.map((cliente) => (
+                    clientes.map((cliente, idx) => (
 
 
-                        <Link key={cliente.id} href={`/PerfilGeral/${cliente.id}`}>
+                        <Link key={cliente.id ?? `cliente-${idx}`} href={`/PerfilGeral/${cliente.id}`}>
                             <div className="
       bg-[#222222] text-white rounded-lg shadow-md
       h-56 p-6 min-w-[280px] sm:w-80

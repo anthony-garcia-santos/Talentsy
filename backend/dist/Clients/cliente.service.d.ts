@@ -5,6 +5,7 @@ import { EditarPerfilDto } from 'src/dto/Cliente.DTO/editar-perfil.dto';
 export declare class ClienteService {
     private repo;
     constructor(repo: Repository<Cliente>);
+    private validateUUID;
     emailExists(email: string): Promise<boolean>;
     register(dto: CreateClienteDto): Promise<Cliente>;
     listarTodos(): Promise<Cliente[]>;

@@ -9,17 +9,15 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
-app.enableCors({
-  origin: [
-    'https://talentsy.vercel.app',
-    'https://talentsy.onrender.com',
-    'http://localhost:3000',
-    'https://api-talentsy.onrender.com'
-  ],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-  allowedHeaders: 'Content-Type,Authorization'
-});
+  app.enableCors({
+    origin: [
+      'http://localhost:3000',
+      'https://api-talentsy.onrender.com'
+    ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    allowedHeaders: 'Content-Type,Authorization'
+  });
 
   await app.listen(process.env.PORT || 5000);
   console.log(`✅ Servidor rodando em porta ${process.env.PORT || 5000}`);

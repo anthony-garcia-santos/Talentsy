@@ -17,56 +17,108 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const cliente_entity_1 = require("../ModelBD/cliente.entity");
-const common_2 = require("@nestjs/common");
 const bcrypt = require("bcrypt");
+const class_validator_1 = require("class-validator");
 let ClienteService = class ClienteService {
     repo;
     constructor(repo) {
         this.repo = repo;
     }
+    async validateUUID(id) {
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        if (!uuidRegex.test(id)) {
+            throw new common_1.BadRequestException('ID inválido - formato UUID requerido');
+        }
+    }
     async emailExists(email) {
-        const user = await this.repo.findOne({ where: { email } });
-        return !!user;
+        try {
+            const user = await this.repo.findOne({ where: { email } });
+            return !!user;
+        }
+        catch (error) {
+            throw new common_1.InternalServerErrorException('Erro ao verificar e-mail');
+        }
     }
     async register(dto) {
-        const senhaHash = await bcrypt.hash(dto.senha, 10);
-        const novoCliente = this.repo.create({ ...dto, senha: senhaHash });
-        return this.repo.save(novoCliente);
+        const errors = await (0, class_validator_1.validate)(dto);
+        if (errors.length > 0) {
+            throw new common_1.BadRequestException(errors);
+        }
+        if (await this.emailExists(dto.email)) {
+            throw new common_1.BadRequestException('E-mail já está em uso');
+        }
+        try {
+            const senhaHash = await bcrypt.hash(dto.senha, 10);
+            const novoCliente = this.repo.create({ ...dto, senha: senhaHash });
+            return await this.repo.save(novoCliente);
+        }
+        catch (error) {
+            throw new common_1.InternalServerErrorException('Falha ao registrar cliente');
+        }
     }
     async listarTodos() {
-        return this.repo.find();
+        try {
+            return await this.repo.find({
+                select: ['id', 'nome', 'email', 'foto', 'cargo'],
+            });
+        }
+        catch (error) {
+            throw new common_1.InternalServerErrorException('Erro ao listar clientes');
+        }
     }
     async buscarPorId(id) {
-        const cliente = await this.repo.findOne({ where: { id } });
-        if (!cliente) {
-            throw new common_2.NotFoundException('Cliente não encontrado');
+        await this.validateUUID(id);
+        try {
+            const cliente = await this.repo.findOne({
+                where: { id },
+                select: ['id', 'nome', 'email', 'foto', 'sobre', 'habilidades', 'projetosRecentes', 'cargo']
+            });
+            if (!cliente) {
+                throw new common_1.NotFoundException(`Cliente com ID ${id} não encontrado`);
+            }
+            return cliente;
         }
-        return cliente;
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            throw new common_1.InternalServerErrorException('Erro ao buscar cliente');
+        }
     }
     async editarPerfil(id, dto) {
-        const cliente = await this.repo.findOne({ where: { id } });
-        if (!cliente) {
-            throw new common_2.NotFoundException('Cliente não encontrado');
+        await this.validateUUID(id);
+        try {
+            const cliente = await this.repo.findOne({ where: { id } });
+            if (!cliente) {
+                throw new common_1.NotFoundException('Cliente não encontrado');
+            }
+            const camposPermitidos = ['foto', 'sobre', 'habilidades', 'projetosRecentes', 'cargo'];
+            camposPermitidos.forEach(campo => {
+                if (dto[campo] !== undefined)
+                    cliente[campo] = dto[campo];
+            });
+            await this.repo.save(cliente);
+            return cliente;
         }
-        if (dto.foto !== undefined)
-            cliente.foto = dto.foto;
-        if (dto.sobre !== undefined)
-            cliente.sobre = dto.sobre;
-        if (dto.habilidades !== undefined)
-            cliente.habilidades = dto.habilidades;
-        if (dto.projetosRecentes !== undefined)
-            cliente.projetosRecentes = dto.projetosRecentes;
-        if (dto.cargo !== undefined)
-            cliente.cargo = dto.cargo;
-        await this.repo.save(cliente);
-        return cliente;
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw error;
+            }
+            throw new common_1.InternalServerErrorException('Falha ao atualizar perfil');
+        }
     }
     async validarLogin(email, senha) {
-        const cliente = await this.repo.findOne({ where: { email } });
+        const cliente = await this.repo.findOne({
+            where: { email },
+            select: ['id', 'nome', 'email', 'senha', 'foto']
+        });
         if (!cliente)
             return null;
         const senhaConfere = await bcrypt.compare(senha, cliente.senha);
-        return senhaConfere ? cliente : null;
+        if (!senhaConfere)
+            return null;
+        const { senha: _, ...clienteSemSenha } = cliente;
+        return clienteSemSenha;
     }
 };
 exports.ClienteService = ClienteService;

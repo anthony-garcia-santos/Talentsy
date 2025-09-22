@@ -74,7 +74,7 @@ let ClienteController = class ClienteController {
         res.cookie('auth_token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            sameSite: 'none',
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
         return { success: true, message: 'Login efetuado', clienteId: cliente.id };
@@ -102,20 +102,35 @@ let ClienteController = class ClienteController {
         }
     }
     async buscarPorId(id) {
-        const cliente = await this.clienteService.buscarPorId(id);
-        return {
-            success: true,
-            data: {
-                id: cliente.id,
-                nome: cliente.nome,
-                email: cliente.email,
-                foto: cliente.foto || null,
-                sobre: cliente.sobre || null,
-                habilidades: cliente.habilidades || null,
-                projetos_recentes: cliente.projetosRecentes || null,
-                cargo: cliente.cargo || null
+        if (!this.isValidUUID(id)) {
+            throw new common_1.BadRequestException('ID deve ser um UUID válido');
+        }
+        try {
+            const cliente = await this.clienteService.buscarPorId(id);
+            if (!cliente) {
+                throw new common_1.HttpException('Cliente não encontrado', common_1.HttpStatus.NOT_FOUND);
             }
-        };
+            return {
+                success: true,
+                data: {
+                    id: cliente.id,
+                    nome: cliente.nome,
+                    email: cliente.email,
+                    foto: cliente.foto || null,
+                    sobre: cliente.sobre || null,
+                    habilidades: cliente.habilidades || null,
+                    projetos_recentes: cliente.projetosRecentes || null,
+                    cargo: cliente.cargo || null
+                }
+            };
+        }
+        catch (error) {
+            throw new common_1.HttpException('Erro ao buscar cliente', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    isValidUUID(id) {
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        return uuidRegex.test(id);
     }
 };
 exports.ClienteController = ClienteController;
