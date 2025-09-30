@@ -1,0 +1,67 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Pagamentos Talentsy</title>
+</head>
+<body style="background-color: black;">
+    <form id="paymentForm">
+  <label for="cardNumber" style="color: blueviolet;">Número do Cartão:</label>
+  <input type="text" id="cardNumber" name="cardNumber" style="color: blueviolet;" required><br><br>
+
+  <label for="cardExpiry" style="color: blueviolet;">Data de Validade:</label>
+  <input type="text" id="cardExpiry" name="cardExpiry" placeholder="MM/AA" required style="color: blueviolet;"><br><br>
+
+  <label for="cardCVC" style="color: blueviolet;">CVC:</label>
+  <input type="text" id="cardCVC" name="cardCVC" required style="color: blueviolet;"><br><br>
+
+  <label for="cardholderName" style="color: blueviolet;">Nome do Titular:</label>
+  <input type="text" id="cardholderName" name="cardholderName" required style="color: blueviolet;"><br><br>
+
+  <button type="submit" style="color: blueviolet;">Pagar</button>
+</form>
+
+<script>document.getElementById('paymentForm').addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  // Obtenha os dados do formulário
+  const cardNumber = document.getElementById('cardNumber').value;
+  const cardExpiry = document.getElementById('cardExpiry').value;
+  const cardCVC = document.getElementById('cardCVC').value;
+  const cardholderName = document.getElementById('cardholderName').value;
+
+  // Crie um objeto com os dados do cartão (ou use a biblioteca do gateway para tokenização)
+  const cardData = {
+    number: cardNumber,
+    expiry: cardExpiry,
+    cvc: cardCVC,
+    name: cardholderName
+  };
+
+  try {
+    // Envie os dados para o gateway 
+    const response = await fetch('/api/processPayment', { // Rota para processar no backend
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ card: cardData }) // Envie os dados do cartão
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      alert('Pagamento realizado com sucesso!');
+      // Redirecione para uma página de confirmação ou faça algo
+    } else {
+      alert('Erro no pagamento: ' + data.error);
+    }
+  } catch (error) {
+    console.error('Erro na requisição:', error);
+    alert('Ocorreu um erro no processamento do pagamento.');
+  }
+});</script>
+
+</body>
+
+</html>
