@@ -14,12 +14,26 @@ export class ClienteService {
     private repo: Repository<Cliente>,
   ) { }
 
+
+
+
+
+  
   private async validateUUID(id: string): Promise<void> {
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     if (!uuidRegex.test(id)) {
       throw new BadRequestException('ID inválido - formato UUID requerido');
     }
   }
+
+
+
+
+
+
+
+
+
 
   async emailExists(email: string): Promise<boolean> {
     try {
@@ -29,6 +43,18 @@ export class ClienteService {
       throw new InternalServerErrorException('Erro ao verificar e-mail');
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
 
   async register(dto: CreateClienteDto): Promise<Cliente> {
     const errors = await validate(dto);
@@ -49,6 +75,18 @@ export class ClienteService {
     }
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
   async listarTodos(): Promise<Cliente[]> {
     try {
       return await this.repo.find({
@@ -58,6 +96,19 @@ export class ClienteService {
       throw new InternalServerErrorException('Erro ao listar clientes');
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   async buscarPorId(id: string): Promise<Cliente> {
     await this.validateUUID(id);
@@ -80,6 +131,16 @@ export class ClienteService {
       throw new InternalServerErrorException('Erro ao buscar cliente');
     }
   }
+
+
+
+
+
+
+
+
+
+
 
   async editarPerfil(id: string, dto: EditarPerfilDto): Promise<Cliente> {
     await this.validateUUID(id);
@@ -105,6 +166,10 @@ export class ClienteService {
       throw new InternalServerErrorException('Falha ao atualizar perfil');
     }
   }
+
+
+
+
 
 
 
