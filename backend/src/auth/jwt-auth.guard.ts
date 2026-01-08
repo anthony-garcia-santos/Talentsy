@@ -12,7 +12,7 @@ export class JwtAuthGuard implements CanActivate {
 
 
     const token = request.cookies['auth_token'];
-    console.log('🍪 [JwtAuthGuard] request.cookies =', request.cookies);
+    console.log('[JwtAuthGuard] request.cookies =', request.cookies);
 
     if (!token) {
       throw new UnauthorizedException('Token não encontrado');
